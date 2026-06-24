@@ -1,2 +1,23 @@
 /.agents
 antigravity.db
+
+# Rust build artifacts
+/antigravity-cli/target/
+/bin/ag.exe
+/bin/*.pdb
+
+# Local Typesense database volume
+/data/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Databases & journals
+*.db-journal
+
+# IDEs & System files
+.vscode/
+.idea/
+Thumbs.db

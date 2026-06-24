@@ -1,0 +1,35 @@
+services:
+  typesense:
+    image: typesense/typesense:26.0
+    container_name: typesense
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - ./data/typesense:/data
+    environment:
+      - TYPESENSE_DATA_DIR=/data
+      - TYPESENSE_API_KEY=antigravity_secret_key_123
+      - TYPESENSE_ENABLE_CORS=true
+
+  mem0-service:
+    build:
+      context: ./../Mem0ai - Rust
+      dockerfile: Dockerfile
+    container_name: mem0-docker
+    restart: on-failure
+    ports:
+      - "5001:8899"
+    volumes:
+      - ~/.mem0_rust:/root/.mem0_rust
+
+  browser-bridge:
+    build:
+      context: ./../Browser Tool/browser-bridge-server
+      dockerfile: Dockerfile
+    container_name: browser-bridge-docker
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./../Browser Tool/browser-bridge-server/antigravity.db:/app/antigravity.db
