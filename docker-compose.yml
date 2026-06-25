@@ -23,13 +23,4 @@ services:
     volumes:
       - ~/.mem0_rust:/root/.mem0_rust
 
-  browser-bridge:
-    build:
-      context: ./../Browser Tool/browser-bridge-server
-      dockerfile: Dockerfile
-    container_name: browser-bridge-docker
-    restart: on-failure
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./../Browser Tool/browser-bridge-server/antigravity.db:/app/antigravity.db
+

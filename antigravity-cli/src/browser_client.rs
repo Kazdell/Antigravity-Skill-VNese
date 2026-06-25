@@ -42,8 +42,8 @@ fn is_port_open(port: u16) -> bool {
 
 pub fn ensure_running() {
     // Check Docker Port first
-    if is_port_open(3000) {
-        println!("[Antigravity CLI] Browser Bridge Docker service detected on port 3000.");
+    if is_port_open(9090) {
+        println!("[Antigravity CLI] Browser Bridge Docker service detected on port 9090.");
         return;
     }
 
@@ -54,7 +54,7 @@ pub fn ensure_running() {
     }
 
     // Local is offline, spawn it
-    println!("[Antigravity CLI] Browser Bridge Docker (3000) and Local (3001) are offline. Spawning Browser Bridge Local...");
+    println!("[Antigravity CLI] Browser Bridge Docker (9090) and Local (3001) are offline. Spawning Browser Bridge Local...");
     let bin_name = if cfg!(target_os = "windows") {
         "browser-bridge-server.exe"
     } else {

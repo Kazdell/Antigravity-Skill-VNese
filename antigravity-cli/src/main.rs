@@ -50,7 +50,7 @@ enum Commands {
         #[arg(long, help = "Quét toàn bộ kho kỹ năng")]
         all: bool,
         #[arg(long, help = "Chỉ quét một file cụ thể")]
-        file: OptionalString,
+        file: Option<String>,
         #[arg(long, help = "Chỉ quét các kỹ năng thay đổi trong git (mặc định)")]
         git_diff: bool,
         #[arg(long, default_value = ".", help = "Đường dẫn thư mục workspace")]
