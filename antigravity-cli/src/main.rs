@@ -10,6 +10,7 @@ mod project;
 mod audit;
 mod verify;
 mod icons;
+mod qa;
 
 use crate::icons::*;
 
@@ -82,6 +83,25 @@ enum Commands {
         no_e2e: bool,
         #[arg(long, help = "Dừng suite xác thực ngay khi gặp lỗi nghiêm trọng")]
         stop_on_fail: bool,
+    },
+    /// Đóng băng dự án, giới hạn sửa đổi tệp tin trong một thư mục cụ thể
+    Freeze {
+        #[arg(help = "Đường dẫn thư mục được phép chỉnh sửa duy nhất")]
+        allowed_dir: String,
+        #[arg(long, default_value = ".", help = "Đường dẫn thư mục workspace")]
+        workspace: String,
+    },
+    /// Mở băng dự án, cho phép chỉnh sửa toàn bộ các thư mục
+    Unfreeze {
+        #[arg(long, default_value = ".", help = "Đường dẫn thư mục workspace")]
+        workspace: String,
+    },
+    /// Chạy kiểm thử tự động QA giao diện (UI) kết hợp Browser MCP
+    Qa {
+        #[arg(help = "URL trang web cần kiểm thử")]
+        url: String,
+        #[arg(long, default_value = ".", help = "Đường dẫn thư mục workspace")]
+        workspace: String,
     },
 }
 
@@ -158,6 +178,33 @@ fn main() {
             let passed = verify::run_verification(workspace, url.as_deref(), *no_e2e, *stop_on_fail);
             if !passed {
                 std::process::exit(1);
+            }
+        }
+        Commands::Freeze { allowed_dir, workspace } => {
+            match project::freeze_directory(workspace, allowed_dir) {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("{} Lỗi khi đóng băng dự án: {}", ICON_ERROR, e);
+                    std::process::exit(1);
+                }
+            }
+        }
+        Commands::Unfreeze { workspace } => {
+            match project::unfreeze_directory(workspace) {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("{} Lỗi khi mở băng dự án: {}", ICON_ERROR, e);
+                    std::process::exit(1);
+                }
+            }
+        }
+        Commands::Qa { url, workspace } => {
+            match qa::run_qa_tests(workspace, url) {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("{} Lỗi khi chạy kiểm thử QA: {}", ICON_ERROR, e);
+                    std::process::exit(1);
+                }
             }
         }
     }

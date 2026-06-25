@@ -132,7 +132,7 @@ pub fn run_verification(workspace_dir: &str, url: Option<&str>, no_e2e: bool, st
             checks: vec![
                 Check {
                     name: "Playwright E2E",
-                    script_path: ".agent/skills/webapp-testing/scripts/playwright_runner.py",
+                    script_path: "",
                     required: false,
                 },
             ],
@@ -200,6 +200,47 @@ pub fn run_verification(workspace_dir: &str, url: Option<&str>, no_e2e: bool, st
                     if stop_on_fail && check.required {
                         println!("\n{} CRITICAL: Lỗi nghiêm trọng tại {}. Dừng suite xác thực.", ICON_ERROR, check.name);
                         return false;
+                    }
+                }
+                continue;
+            }
+
+            if check.name == "Playwright E2E" {
+                println!("{} Running: {}", ICON_PROGRESS, check.name);
+                let check_start = Instant::now();
+                
+                let mut cmd = if cfg!(target_os = "windows") {
+                    let mut c = StdCommand::new("bin\\ag.exe");
+                    if let Some(u) = url {
+                        c.args(["qa", u]);
+                    }
+                    c
+                } else {
+                    let mut c = StdCommand::new("bin/ag");
+                    if let Some(u) = url {
+                        c.args(["qa", u]);
+                    }
+                    c
+                };
+
+                let status = cmd.status();
+                let duration = check_start.elapsed().as_secs_f32();
+
+                match status {
+                    Ok(s) if s.success() => {
+                        println!("{} {}: PASSED ({:.1}s)", ICON_SUCCESS, check.name, duration);
+                        passed_checks += 1;
+                        results.push((check.name, true, false, duration));
+                    }
+                    _ => {
+                        println!("{} {}: FAILED ({:.1}s)", ICON_ERROR, check.name, duration);
+                        failed_checks += 1;
+                        results.push((check.name, false, false, duration));
+
+                        if stop_on_fail && check.required {
+                            println!("\n{} CRITICAL: Lỗi nghiêm trọng tại {}. Dừng suite xác thực.", ICON_ERROR, check.name);
+                            return false;
+                        }
                     }
                 }
                 continue;

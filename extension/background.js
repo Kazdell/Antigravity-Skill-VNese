@@ -6,7 +6,12 @@ const IDLE_TIMEOUT_MS = 180000; // 3 phút tự động ngủ
 
 // Lấy cài đặt ban đầu
 chrome.storage.local.get(['connectionEnabled'], (result) => {
-  if (result.connectionEnabled) {
+  // Mặc định là true nếu chưa được cấu hình (undefined)
+  const isEnabled = result.connectionEnabled !== false;
+  if (isEnabled) {
+    if (result.connectionEnabled === undefined) {
+      chrome.storage.local.set({ connectionEnabled: true });
+    }
     connectWebSocket();
   }
 });
@@ -32,10 +37,11 @@ function stopIdleTimer() {
 // Đánh thức kết nối khi có hoạt động
 function wakeUpAndConnect() {
   chrome.storage.local.get(['connectionEnabled'], (result) => {
-    if (result.connectionEnabled && connectionStatus === 'disconnected') {
+    const isEnabled = result.connectionEnabled !== false;
+    if (isEnabled && connectionStatus === 'disconnected') {
       console.log('User activity detected. Waking up and connecting WebSocket...');
       connectWebSocket();
-    } else if (result.connectionEnabled && connectionStatus === 'connected') {
+    } else if (isEnabled && connectionStatus === 'connected') {
       resetIdleTimer();
     }
   });
@@ -209,7 +215,8 @@ function connectWebSocket() {
     
     // Thử kết nối lại sau 5 giây nếu Switch vẫn bật
     chrome.storage.local.get(['connectionEnabled'], (result) => {
-      if (result.connectionEnabled) {
+      const isEnabled = result.connectionEnabled !== false;
+      if (isEnabled) {
         if (reconnectTimeout) clearTimeout(reconnectTimeout);
         reconnectTimeout = setTimeout(connectWebSocket, 5000);
       }

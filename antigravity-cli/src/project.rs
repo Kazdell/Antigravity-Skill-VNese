@@ -244,3 +244,28 @@ pub fn upgrade_project(target_path: &str, current_exe: PathBuf) -> io::Result<()
     println!("\n{} BÀN GIAO NÂNG CẤP DỰ ÁN THÀNH CÔNG! {}", ICON_SPARKLES, ICON_SPARKLES);
     Ok(())
 }
+
+pub fn freeze_directory(project_path: &str, allowed_dir: &str) -> io::Result<()> {
+    let state_dir = Path::new(project_path).join(".agents").join("state");
+    fs::create_dir_all(&state_dir)?;
+    
+    let config_path = state_dir.join("freeze.config");
+    let allowed_path = Path::new(allowed_dir).canonicalize().unwrap_or_else(|_| Path::new(allowed_dir).to_path_buf());
+    
+    let mut file = fs::File::create(&config_path)?;
+    file.write_all(allowed_path.to_string_lossy().as_bytes())?;
+    
+    println!("{} Đã đóng băng dự án. Chỉ cho phép sửa đổi trong thư mục: {}", ICON_SUCCESS, allowed_path.display());
+    Ok(())
+}
+
+pub fn unfreeze_directory(project_path: &str) -> io::Result<()> {
+    let config_path = Path::new(project_path).join(".agents").join("state").join("freeze.config");
+    if config_path.exists() {
+        fs::remove_file(&config_path)?;
+        println!("{} Đã mở băng dự án. Cho phép sửa đổi toàn bộ các thư mục.", ICON_SUCCESS);
+    } else {
+        println!("{} Dự án hiện đang không ở trạng thái đóng băng.", ICON_INFO);
+    }
+    Ok(())
+}
