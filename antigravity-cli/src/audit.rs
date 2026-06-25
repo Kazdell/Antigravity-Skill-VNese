@@ -239,9 +239,13 @@ fn get_git_diff_files(workspace_dir: &str) -> Vec<PathBuf> {
     for f in candidate_files {
         let filepath = Path::new(workspace_dir).join(&f);
         let rel_normalized = f.replace('\\', "/");
-        // Only scan skill files or markdown files in .agents/
+        // Only scan skill files or markdown files in .agents/ with allowed extensions
         if (rel_normalized.contains("skills/") || rel_normalized.contains(".agents/")) && filepath.is_file() {
-            files.push(filepath);
+            if let Some(ext) = filepath.extension().and_then(|e| e.to_str()) {
+                if vec!["md", "py", "sh", "ps1", "html", "css", "js", "jsx", "tsx", "json", "yml", "yaml", "txt"].contains(&ext.to_lowercase().as_str()) {
+                    files.push(filepath);
+                }
+            }
         }
     }
 

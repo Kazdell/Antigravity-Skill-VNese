@@ -79,6 +79,39 @@ pub fn initialize_project(project_path: &str, stack: &str) -> io::Result<()> {
         eprintln!("{} Cảnh báo: Không thể cài đặt git hooks: {}", ICON_WARNING, e);
     }
 
+    // 4. Run Toolchain scan automatically via PowerShell
+    println!("{} Đang tự động quét toolchain và lập chỉ mục công cụ thiết bị...", ICON_PROGRESS);
+    let refresh_script = target_agents_dir.join("scripts").join("refresh-tool-index.ps1");
+    if refresh_script.exists() {
+        let status = std::process::Command::new("powershell")
+            .args(["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", &refresh_script.to_string_lossy()])
+            .status();
+        match status {
+            Ok(s) if s.success() => println!("   -> Lập chỉ mục công cụ thành công tại .agents/state/tool-index.md"),
+            _ => eprintln!("{} Cảnh báo: Không thể tự động chạy refresh-tool-index.ps1", ICON_WARNING),
+        }
+    } else {
+        // Fallback to global repository script if target does not have it yet
+        let global_script = Path::new(GLOBAL_REPO).join(".agents").join("scripts").join("refresh-tool-index.ps1");
+        if global_script.exists() {
+            let status = std::process::Command::new("powershell")
+                .args(["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", &global_script.to_string_lossy()])
+                .status();
+            if let Ok(s) = status {
+                if s.success() {
+                    // Copy generated index file to project path if needed
+                    let generated_md = Path::new(GLOBAL_REPO).join(".agents").join("state").join("tool-index.md");
+                    let dest_md = target_agents_dir.join("state").join("tool-index.md");
+                    let _ = fs::create_dir_all(target_agents_dir.join("state"));
+                    if generated_md.exists() {
+                        let _ = fs::copy(generated_md, dest_md);
+                        println!("   -> Lập chỉ mục công cụ toàn cục thành công.");
+                    }
+                }
+            }
+        }
+    }
+
     println!("\n{} Khởi tạo cấu trúc .agents thành công!", ICON_SUCCESS);
     println!("Các specialist đã kích hoạt: {:?}", selected_specialists);
     Ok(())

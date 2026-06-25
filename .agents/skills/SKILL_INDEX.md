@@ -1,4 +1,4 @@
-﻿# 🗂️ SKILL INDEX (Mục Lục Bộ Kỹ Năng)
+# 🗂️ SKILL INDEX (Mục Lục Bộ Kỹ Năng)
 
 > **Mục tiêu**: Tra cứu nhanh và chính xác các kỹ năng nghiệp vụ thuộc chu trình Sprint mà không cần quét toàn bộ thư mục, tránh lãng phí Token.
 > **Luật vận hành**: Khi Jarvis cần thực thi một tác vụ, hãy đọc mục lục này để xác định đúng skill và nạp file SKILL.md tương ứng.
@@ -95,7 +95,9 @@
 - **[typescript-expert](./2-build-design/typescript-expert/SKILL.md)**: >-
 - **[typescript-pro](./2-build-design/typescript-pro/SKILL.md)**: Master TypeScript with advanced types, generics, and strict type
 - **[typesense-search](./2-build-design/typesense/SKILL.md)**: Tra cứu tài liệu, quy chuẩn rules, workflows và skills của hệ thống qua Typesense Search Engine
+- **[ponytail](./2-build-design/ponytail/SKILL.md)**: Forces the laziest solution that actually works, simplest, shortest, most minimal. Channels YAGNI senior dev mode.
 - **[using-git-worktrees](./2-build-design/using-git-worktrees/SKILL.md)**: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+
 
 ## 📦 3-REVIEW-INVESTIGATE
 
@@ -114,6 +116,16 @@
 - **[incident-response-smart-fix](./3-review-investigate/incident-response-smart-fix/SKILL.md)**: "[Extended thinking: This workflow implements a sophisticated debugging and resolution pipeline that leverages AI-assisted debugging tools and observability platforms to systematically diagnose and res"
 - **[incident-runbook-templates](./3-review-investigate/incident-runbook-templates/SKILL.md)**: Create structured incident response runbooks with step-by-step procedures, escalation paths, and recovery actions. Use when building runbooks, responding to incidents, or establishing incident response procedures.
 - **[systematic-debugging](./3-review-investigate/systematic-debugging/SKILL.md)**: 4-phase systematic debugging methodology with root cause analysis and evidence-based verification.
+- **[llm-security](./3-review-investigate/llm-security/SKILL.md)**: OWASP LLM and Agentic AI safety testing and prompt injection.
+- **[js-reverse](./3-review-investigate/js-reverse/SKILL.md)**: JS reverse engineering, browser debugger bypassing, and decryption.
+- **[apk-reverse](./3-review-investigate/apk-reverse/SKILL.md)**: Android APK decompilation, smali modification, signing, and Frida dynamic hooking.
+- **[api-security](./3-review-investigate/api-security/SKILL.md)**: REST, GraphQL, and WebSockets API vulnerability testing (BOLA, IDOR, BFLA).
+- **[edr-bypass-re](./3-review-investigate/edr-bypass-re/SKILL.md)**: EDR/AV hook analysis and bypass strategies.
+- **[firmware-pentest](./3-review-investigate/firmware-pentest/SKILL.md)**: IoT and firmware analysis, emulation, and exploitation.
+- **[malware-analysis](./3-review-investigate/malware-analysis/SKILL.md)**: YARA, Sigma, CAPE sandbox integration, and malware IOC extraction.
+- **[pwn-chain](./3-review-investigate/pwn-chain/SKILL.md)**: Stack, heap, and kernel exploitation and binary weaponization.
+- **[patch-diff-exploit](./3-review-investigate/patch-diff-exploit/SKILL.md)**: Vulnerability discovery via security patch diffing.
+
 
 ## 📦 4-TEST-QA
 
