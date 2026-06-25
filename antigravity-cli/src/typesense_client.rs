@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::time::Duration;
+use crate::icons::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SearchResult {
@@ -79,7 +80,7 @@ fn parse_markdown_file(filepath: &Path) -> Option<(String, String, String, Strin
 }
 
 fn local_fallback_search(query: &str, workspace_dir: &str) -> Vec<SearchResult> {
-    println!("\n⚠️  Typesense Server offline. Đang chuyển sang Local Regex/Grep Search...");
+    println!("\n{} Typesense Server offline. Đang chuyển sang Local Regex/Grep Search...", ICON_WARNING);
     let agents_dir = Path::new(workspace_dir).join(".agents");
     if !agents_dir.exists() {
         eprintln!("Error: Không tìm thấy thư mục .agents tại {}", workspace_dir);
@@ -213,11 +214,11 @@ pub fn search(query: &str, workspace_dir: &str) {
 }
 
 fn print_results(query: &str, results: Vec<SearchResult>) {
-    println!("\n🔍 Kết quả tìm kiếm Typesense cho: '{}'", query);
+    println!("\n{} Kết quả tìm kiếm Typesense cho: '{}'", ICON_SEARCH, query);
     println!("{}", "=".repeat(70));
     
     if results.is_empty() {
-        println!("❌ Không tìm thấy tài liệu phù hợp.");
+        println!("{} Không tìm thấy tài liệu phù hợp.", ICON_ERROR);
         println!("{}", "=".repeat(70));
         return;
     }
@@ -228,4 +229,127 @@ fn print_results(query: &str, results: Vec<SearchResult>) {
         println!("   Mô tả: {}", r.description);
         println!("{}", "-".repeat(70));
     }
+}
+
+fn setup_schema(client: &reqwest::blocking::Client) -> Result<(), Box<dyn std::error::Error>> {
+    // Delete existing collection if any
+    let delete_url = "http://localhost:8108/collections/agents_knowledge";
+    let _ = client.delete(delete_url)
+        .header("X-TYPESENSE-API-KEY", "antigravity_secret_key_123")
+        .send();
+
+    // Create new collection schema
+    let create_url = "http://localhost:8108/collections";
+    let schema = serde_json::json!({
+        "name": "agents_knowledge",
+        "fields": [
+            {"name": "name", "type": "string"},
+            {"name": "description", "type": "string"},
+            {"name": "trigger", "type": "string", "optional": true},
+            {"name": "content", "type": "string"},
+            {"name": "filepath", "type": "string"},
+            {"name": "type", "type": "string", "facet": true}
+        ]
+    });
+
+    let res = client.post(create_url)
+        .header("X-TYPESENSE-API-KEY", "antigravity_secret_key_123")
+        .json(&schema)
+        .send()?;
+
+    if res.status().is_success() {
+        println!("Collection 'agents_knowledge' created successfully.");
+        Ok(())
+    } else {
+        let err_text = res.text().unwrap_or_else(|_| "Unknown error".to_string());
+        Err(format!("Failed to create collection: {}", err_text).into())
+    }
+}
+
+pub fn run_indexer(workspace_dir: &str) -> bool {
+    let client = match reqwest::blocking::Client::builder()
+        .timeout(Duration::from_secs(5))
+        .build() {
+            Ok(c) => c,
+            Err(e) => {
+                eprintln!("{} Lỗi khởi tạo client: {}", ICON_ERROR, e);
+                return false;
+            }
+        };
+
+    println!("{} Đang thiết lập Schema cho Typesense...", ICON_PROGRESS);
+    if let Err(e) = setup_schema(&client) {
+        eprintln!("{} Lỗi thiết lập Typesense: {}", ICON_ERROR, e);
+        eprintln!("Hãy chắc chắn rằng Typesense Server đang hoạt động tại http://localhost:8108");
+        return false;
+    }
+
+    let agents_dir = Path::new(workspace_dir).join(".agents");
+    if !agents_dir.exists() {
+        eprintln!("{} Lỗi: Thư mục .agents không tồn tại tại {}", ICON_ERROR, workspace_dir);
+        return false;
+    }
+
+    let categories = vec!["rules", "skills", "workflows", ".shared"];
+    let mut indexed_count = 0;
+
+    for cat in categories {
+        let cat_path = agents_dir.join(cat);
+        if !cat_path.exists() {
+            continue;
+        }
+
+        let mut paths_to_visit = vec![cat_path];
+        while let Some(dir_path) = paths_to_visit.pop() {
+            if let Ok(entries) = fs::read_dir(dir_path) {
+                for entry in entries.flatten() {
+                    let path = entry.path();
+                    if path.is_dir() {
+                        paths_to_visit.push(path);
+                    } else if path.is_file() && path.extension().map_or(false, |ext| ext == "md") {
+                        if let Some((name, desc, trig, content)) = parse_markdown_file(&path) {
+                            let rel_path = path
+                                .strip_prefix(workspace_dir)
+                                .unwrap_or(&path)
+                                .to_string_lossy()
+                                .replace('\\', "/");
+
+                            let doc = serde_json::json!({
+                                "name": name,
+                                "description": desc,
+                                "trigger": if trig.is_empty() { None } else { Some(trig) },
+                                "content": content,
+                                "filepath": rel_path,
+                                "type": cat
+                            });
+
+                            let url = "http://localhost:8108/collections/agents_knowledge/documents";
+                            let res = client.post(url)
+                                .header("X-TYPESENSE-API-KEY", "antigravity_secret_key_123")
+                                .json(&doc)
+                                .send();
+
+                            match res {
+                                Ok(resp) if resp.status().is_success() => {
+                                    indexed_count += 1;
+                                    println!("Indexed [{}]: {} -> {}", cat.to_uppercase(), rel_path, name);
+                                }
+                                Ok(resp) => {
+                                    let status = resp.status();
+                                    let err_msg = resp.text().unwrap_or_else(|_| "Unknown error".to_string());
+                                    eprintln!("{} Failed to index {}: Status {} - {}", ICON_WARNING, rel_path, status, err_msg);
+                                }
+                                Err(e) => {
+                                    eprintln!("{} Failed to index {}: {}", ICON_WARNING, rel_path, e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    println!("\n{} Lập chỉ mục thành công! Tổng số tệp đã lập: {}", ICON_SUCCESS, indexed_count);
+    true
 }

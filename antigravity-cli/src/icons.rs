@@ -1,0 +1,11 @@
+pub const ICON_PROGRESS: &str = "\x1b[34m»\x1b[0m";  // Blue »
+pub const ICON_SUCCESS: &str = "\x1b[32m✔\x1b[0m";   // Green ✔
+pub const ICON_ERROR: &str = "\x1b[31m✖\x1b[0m";     // Red ✖
+pub const ICON_WARNING: &str = "\x1b[33m⚠\x1b[0m";   // Yellow ⚠
+pub const ICON_SHIELD: &str = "\x1b[35m✦\x1b[0m";    // Magenta ✦
+pub const ICON_REPORT: &str = "\x1b[36m●\x1b[0m";    // Cyan ●
+pub const ICON_FILE: &str = "\x1b[90m›\x1b[0m";      // Gray ›
+pub const ICON_SEARCH: &str = "\x1b[34m»\x1b[0m";    // Blue »
+pub const ICON_SPARKLES: &str = "\x1b[35m✦\x1b[0m";   // Magenta ✦
+pub const ICON_SKIP: &str = "\x1b[90m-\x1b[0m";      // Gray -
+pub const ICON_INFO: &str = "\x1b[36mℹ\x1b[0m";      // Cyan ℹ

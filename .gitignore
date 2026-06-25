@@ -9,6 +9,9 @@ antigravity.db
 # Local Typesense database volume
 /data/
 
+# Temporary scratch and experiment files
+/scratch/
+
 # Environment files
 .env
 .env.*

@@ -1114,3 +1114,26 @@ DESIGN APPROACH:
 - [ ] **Accessibility:** Is the contrast ratio sufficient, and is the site navigable via keyboard/screen reader?
 - [ ] **Prägnanz:** Are icons and shapes simple enough to be recognized at a glance?
 - [ ] **Figure/Ground:** Is it clear which element is in focus (e.g., using shadows or scrims for modals)?
+
+---
+
+## 9. Impeccable UX & Accessibility Standards
+
+Bộ quy chuẩn tối ưu hóa trải nghiệm đọc, khả năng tiếp cận và thiết kế bền vững (phòng chống AI Slop và tăng cường tính dễ đọc):
+
+### 1. Typography & Readability (Khả năng Đọc)
+- **Độ rộng dòng (Line Length):** Độ rộng lý tưởng cho một dòng văn bản (body text) là từ **50 đến 75 ký tự** (bao gồm khoảng trắng), tối đa không quá **80 ký tự** (`max-width: 60ch` đến `70ch`). Dòng quá dài sẽ khiến mắt người đọc mỏi khi phải di chuyển quá xa, dòng quá ngắn gây ngắt quãng luồng tư duy.
+- **Khoảng cách dòng (Line Height/Leading):** Mặc định `line-height` cho body text phải từ **1.5 đến 1.6** (hoặc `1.62` theo tỷ lệ vàng). Tiêu đề lớn có thể dùng leading chặt chẽ hơn (`1.2` đến `1.3`).
+- **Thứ bậc tiêu đề (Heading Hierarchy):** Tuyệt đối không nhảy cóc tiêu đề (ví dụ từ `h1` nhảy xuống `h3` hoặc `h4` mà không qua `h2`). Việc này làm hỏng cấu trúc phân tích của Screen Readers và ảnh hưởng xấu đến SEO.
+
+### 2. Accessibility & Contrast (Khả năng Tiếp cận)
+- **Tỉ lệ tương phản (Contrast Ratio - WCAG 2.1 AA):**
+  - Chữ thường (dưới 18px hoặc 14px bold): Tỉ lệ tương phản tối thiểu giữa màu chữ và nền phải là **4.5:1**.
+  - Chữ lớn (từ 18px trở lên hoặc 14px bold trở lên): Tỉ lệ tương phản tối thiểu là **3.0:1**.
+  - *Cấm tuyệt đối:* Dùng chữ màu xám trên các nền có màu sắc rực rỡ (`gray-on-color`) vì cực kỳ khó đọc.
+- **Kích thước vùng tương tác (Touch Targets):**
+  - Mọi phần tử có thể click/tap (nút, liên kết, checkbox, inputs) trên mobile phải đạt kích thước vùng bấm tối thiểu là **44x44px** (hoặc **48x48px** theo khuyến nghị của Google Android/Material Design) để tránh bấm nhầm.
+
+### 3. Visual Layout Systems (Hệ thống Khoảng cách & Spacing)
+- **Khoảng đệm (Cramped Padding):** Tránh thiết kế các container/card có padding quá hẹp so với nội dung chữ bên trong. Quy tắc mặc định: padding của box tối thiểu phải bằng cỡ chữ lớn nhất bên trong box nhân với 1.5.
+- **Phân cấp khoảng cách (Grid/Spacing Hierarchy):** Sử dụng hệ thống Grid 8-point để thiết kế spacing. Khoảng cách giữa các nhóm phần tử khác nhau phải lớn hơn khoảng cách giữa các phần tử trong cùng một nhóm (Gestalt Proximity) để mắt nhận diện cấu trúc tức thì.
