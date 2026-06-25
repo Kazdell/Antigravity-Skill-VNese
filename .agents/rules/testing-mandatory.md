@@ -3,14 +3,10 @@ trigger: always_on
 ---
 # MANDATORY TESTING RULE (ENFORCED)
 
-> **Mục tiêu**: Đảm bảo chất lượng hệ thống (Quality Assurance) mức cao nhất bằng Test-Driven Development và Regression Avoidance.
+> **Goal**: Ensure the highest quality of the system (Quality Assurance) via Test-Driven Development and Regression Avoidance.
 
-1. **Test-Driven / Coverage Mandatory**: Kể từ nay, MỖI KHI hệ thống thêm một tính năng mới (Feature), API mới hoặc một file logic mới, BẮT BUỘC toàn bộ dòng code đó phải đi kèm hoặc được cập nhật các Test Case tương ứng (Playwright E2E cho Frontend UI hoặc xUnit Integration/Unit Test cho Backend C#).
-2. **Tuyệt đối không được Deploy/Hoàn Tất**: Không một module nào được phép báo cáo "Xong" (Done) nếu như kịch bản giả lập chưa chạy hoặc test bị FAIL.
-3. **Tuân thủ Decision Tables**: Mọi Test Case sinh ra cần phải cover đủ nhánh đúng (Happy Path) và cụm nhánh sai (Edge Cases/Alternative Flows).
-4. **Testcontainers Standard**: Backend bắt buộc sử dụng cơ chế Testcontainers tạo DB Ảo dựa trên Image của SQL Edge/Postgres để tách biệt môi trường Prod/Dev, nghiêm cấm trỏ Test vào DB thật của ứng dụng.
-5. **Mandatory AI Code Review**: Trước khi kết thúc Task hoặc merge Pull Request, BẮT BUỘC phải thực hiện quy trình AI Code Review nội bộ (bằng cách chạy lệnh `/audit` hoặc tự rà soát theo kỹ năng `open-code-review`). Mọi lỗi nghiêm trọng về bảo mật, NPE hoặc rò rỉ tài nguyên được phát hiện bởi AI phải được khắc phục và xác nhận hoàn tất trước khi tiến hành chạy Unit Test/E2E cuối cùng.
-
----
-
-
+1. **Test-Driven / Coverage Mandatory**: From now on, WHENEVER a new feature, API, or logic file is added, it is MANDATORY that the code is accompanied by or updated with corresponding Test Cases (Playwright E2E for Frontend UI or xUnit Integration/Unit Tests for Backend C#).
+2. **No Deploy / Complete without Passing Tests**: No module can be marked as "Done" if tests fail or have not been executed.
+3. **Follow Decision Tables**: All generated test cases must cover both the happy path and edge cases/alternative flows.
+4. **Testcontainers Standard**: Backend tests must use Testcontainers to spin up virtual databases (based on SQL Edge/Postgres images) to isolate tests from the production/development databases. Direct testing against the application's real database is strictly prohibited.
+5. **Mandatory AI Code Review**: Before finishing a task or merging a PR, it is MANDATORY to perform an internal AI Code Review (by running `/audit` or self-reviewing via the `open-code-review` skill). Critical security flaws, NPEs, or resource leaks found by the AI must be fixed and verified before executing final unit/E2E tests.
