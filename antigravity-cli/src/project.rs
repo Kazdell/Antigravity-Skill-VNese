@@ -49,9 +49,9 @@ pub fn initialize_project(project_path: &str, stack: &str) -> io::Result<()> {
     println!("{} Đang khởi tạo cấu trúc agents tại: {}", ICON_PROGRESS, target_agents_dir.display());
 
     // 1. Copy base folders
-    let base_folders = vec!["rules", "workflows", ".shared"];
+    let base_folders = vec!["rules", "workflows", ".shared", "skills"];
     for folder in base_folders {
-        let src = Path::new(GLOBAL_REPO).join(folder);
+        let src = Path::new(GLOBAL_REPO).join(".agents").join(folder);
         let dst = target_agents_dir.join(folder);
         if src.exists() {
             println!("   -> Sao chép thư mục: {}", folder);
@@ -61,10 +61,7 @@ pub fn initialize_project(project_path: &str, stack: &str) -> io::Result<()> {
         }
     }
 
-    // 2. Setup skills based on stack
-    let target_skills_dir = target_agents_dir.join("skills");
-    fs::create_dir_all(&target_skills_dir)?;
-
+    // 2. Setup skills based on stack (Skills are already copied, we just track active specialists)
     let mut selected_specialists = HashSet::new();
     // Default core specialists
     selected_specialists.insert("mk08".to_string());
@@ -74,17 +71,6 @@ pub fn initialize_project(project_path: &str, stack: &str) -> io::Result<()> {
     for tech in stack.split(',') {
         if let Some(spec) = get_tech_mapping(tech) {
             selected_specialists.insert(spec.to_string());
-        }
-    }
-
-    for mk in &selected_specialists {
-        let src = Path::new(GLOBAL_REPO).join("skills").join(mk);
-        let dst = target_skills_dir.join(mk);
-        if src.exists() {
-            println!("   -> Kích hoạt kỹ năng specialist: {}", mk);
-            if let Err(e) = copy_dir_all(&src, &dst) {
-                eprintln!("{} Cảnh báo: Không thể sao chép kỹ năng {}: {}", ICON_WARNING, mk, e);
-            }
         }
     }
 
@@ -111,26 +97,16 @@ pub fn add_skills(project_path: &str, tech_list: &str) -> io::Result<()> {
     for tech in tech_list.split(',') {
         let tech_clean = tech.trim();
         if let Some(mk) = get_tech_mapping(tech_clean) {
-            let src = Path::new(GLOBAL_REPO).join("skills").join(mk);
-            let dst = target_skills_dir.join(mk);
-            if src.exists() {
-                if !dst.exists() {
-                    println!("   -> Thêm kỹ năng specialist cho '{}': {}", tech_clean, mk);
-                    copy_dir_all(&src, &dst)?;
-                    added.push(format!("{} ({})", tech_clean, mk));
-                } else {
-                    println!("   -> Kỹ năng specialist cho '{}' ({}) đã tồn tại.", tech_clean, mk);
-                }
-            } else {
-                eprintln!("{} Cảnh báo: Thư mục kỹ năng {} không tồn tại trong repo gốc.", ICON_WARNING, mk);
-            }
+            // Vì toàn bộ kho skills đã được copy trong ag init, chúng ta chỉ cần xác nhận specialist này sẵn sàng hoạt động
+            println!("   -> Kỹ năng specialist cho '{}' ({}) đã sẵn sàng hoạt động trong hệ thống.", tech_clean, mk);
+            added.push(format!("{} ({})", tech_clean, mk));
         } else {
             eprintln!("{} Cảnh báo: Công nghệ '{}' chưa được hỗ trợ ánh xạ.", ICON_WARNING, tech_clean);
         }
     }
 
     if !added.is_empty() {
-        println!("\n{} Đã thêm thành công kỹ năng: {}", ICON_SUCCESS, added.join(", "));
+        println!("\n{} Đã xác nhận thành công kỹ năng: {}", ICON_SUCCESS, added.join(", "));
     } else {
         println!("\n{} Không có kỹ năng mới nào được thêm vào.", ICON_INFO);
     }
@@ -200,9 +176,9 @@ pub fn upgrade_project(target_path: &str, current_exe: PathBuf) -> io::Result<()
     fs::create_dir_all(&bin_dir)?;
 
     // 1. Copy base folders
-    let base_folders = vec!["rules", "workflows", ".shared"];
+    let base_folders = vec!["rules", "workflows", ".shared", "skills"];
     for folder in base_folders {
-        let src = Path::new(GLOBAL_REPO).join(folder);
+        let src = Path::new(GLOBAL_REPO).join(".agents").join(folder);
         let dst = target_agents_dir.join(folder);
         if src.exists() {
             println!("   -> Cập nhật thư mục: {}", folder);

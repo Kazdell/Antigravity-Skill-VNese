@@ -1,8 +1,8 @@
-/.agents
+/.agents/state/
 antigravity.db
 
 # Rust build artifacts
-/antigravity-cli/target/
+**/target/
 /bin/ag.exe
 /bin/*.pdb
 
