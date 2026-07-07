@@ -97,6 +97,10 @@
 - **[typesense-search](./2-build-design/typesense/SKILL.md)**: Tra cứu tài liệu, quy chuẩn rules, workflows và skills của hệ thống qua Typesense Search Engine
 - **[ponytail](./2-build-design/ponytail/SKILL.md)**: Forces the laziest solution that actually works, simplest, shortest, most minimal. Channels YAGNI senior dev mode.
 - **[using-git-worktrees](./2-build-design/using-git-worktrees/SKILL.md)**: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+- **[Game_Engine_Math_Overlay](./Game_Engine_Math_Overlay/SKILL.md)**: Core architecture concepts of Unity/Unreal Engine, View Matrix math, World-to-Screen (W2S) algorithms, and GLFW transparent click-through overlay.
+- **[Memory_Access_Stealth_Bypass](./Memory_Access_Stealth_Bypass/SKILL.md)**: Out-of-process memory manipulation (RPM/WPM), Direct Syscalls, Kernel Drivers (Ring 0), DMA hardware access, and stealth evasion of Anti-Cheat detection vectors.
+- **[Reverse_Engineering_Offsets](./Reverse_Engineering_Offsets/SKILL.md)**: Static/dynamic analysis using Ghidra, x64dbg, and ReClass.NET, runtime External Pattern Scanning (AOB), and automated SDK dumping.
+- **[Java_Swing_Javassist_Modding](./Java_Swing_Javassist_Modding/SKILL.md)**: Hướng dẫn kỹ thuật dịch ngược, đóng gói, vá class Java Swing an toàn và thiết kế overlay menu.
 
 
 ## 📦 3-REVIEW-INVESTIGATE
