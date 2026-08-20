@@ -102,6 +102,27 @@
 - **[Reverse_Engineering_Offsets](./Reverse_Engineering_Offsets/SKILL.md)**: Static/dynamic analysis using Ghidra, x64dbg, and ReClass.NET, runtime External Pattern Scanning (AOB), and automated SDK dumping.
 - **[Java_Swing_Javassist_Modding](./Java_Swing_Javassist_Modding/SKILL.md)**: Hướng dẫn kỹ thuật dịch ngược, đóng gói, vá class Java Swing an toàn và thiết kế overlay menu.
 
+---
+
+## 📦 GENERAL SKILLS (Migrated from Modding Project)
+
+> Skills tổng quát, dùng được cho mọi domain (Backend, Frontend, Security, DevOps).
+
+- **[api-design-principles](./api-design-principles/SKILL.md)**: Master REST and GraphQL API design principles. Dùng khi thiết kế API mới hoặc review API spec.
+- **[api-patterns](./api-patterns/SKILL.md)**: API design principles and decision-making patterns.
+- **[backend-dev-guidelines](./backend-dev-guidelines/SKILL.md)**: Opinionated backend standards for Node.js + Express + TypeScript microservices. Covers BaseController, DI, Prisma, Zod, Sentry.
+- **[backend-development-feature-development](./backend-development-feature-development/SKILL.md)**: Orchestrate end-to-end backend feature development. Dùng khi coordinate multi-phase feature delivery.
+- **[dotnet-backend-patterns](./dotnet-backend-patterns/SKILL.md)**: Master C#/.NET backend patterns — async/await, DI, EF Core, Dapper, xUnit. Dùng khi develop .NET APIs.
+- **[full-stack-scaffold](./full-stack-scaffold/SKILL.md)**: Full-stack project scaffolding patterns.
+- **[javascript-mastery](./javascript-mastery/SKILL.md)**: 33+ essential JS concepts — closures, async/await, functional programming. Dùng khi giảng dạy hoặc debug JS.
+- **[javascript-pro](./javascript-pro/SKILL.md)**: Master modern JavaScript with ES6+, async patterns, and Node.js.
+- **[memory-safety-patterns](./memory-safety-patterns/SKILL.md)**: Memory-safe programming with RAII, ownership, smart pointers across Rust, C++, C.
+- **[nodejs-backend-patterns](./nodejs-backend-patterns/SKILL.md)**: Production-ready Node.js with Express/Fastify, middleware, auth, DB integration, REST/GraphQL.
+- **[nodejs-best-practices](./nodejs-best-practices/SKILL.md)**: Node.js development principles and decision-making.
+- **[rust-async-patterns](./rust-async-patterns/SKILL.md)**: Master Rust async with Tokio, async traits, error handling, concurrent patterns.
+- **[typescript-advanced-types](./typescript-advanced-types/SKILL.md)**: Master TypeScript advanced type system — generics, conditional types, mapped types, template literals.
+- **[typescript-expert](./typescript-expert/SKILL.md)**: TypeScript expert patterns and architecture.
+- **[typescript-pro](./typescript-pro/SKILL.md)**: Master TypeScript with advanced types, generics, and strict type safety.
 
 ## 📦 3-REVIEW-INVESTIGATE
 

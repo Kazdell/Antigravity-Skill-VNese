@@ -17,6 +17,10 @@ This skill documents static and dynamic analysis workflows using Free and Open-S
     *   Attach to running processes and set **Hardware Breakpoints** on writes to trace what instruction updates specific player offsets (e.g. `mov [rcx + 0x48], eax` means the health offset is `0x48`).
 3.  **ReClass.NET (Structure Modeling):**
     *   Map raw memory pointers dynamically into C++ class definitions. Pad unused fields (e.g. `char pad_0000[16]`) to align offsets accurately.
+4.  **In-Memory Value Scanning (Targeted Index Discovery):**
+    *   To find specific resource/currency indices in memory without source-level decompilation, request the user to provide their current exact in-game quantity (e.g. `1.5` or `7.0`).
+    *   Use the targeted memory scanning tool (`--val <VALUE>`) to query the process memory for this precise floating-point number.
+    *   This eliminates guessing and immediately identifies the correct index.
 
 ---
 
