@@ -1,83 +1,42 @@
 ---
 name: api-patterns
-description: API design principles and decision-making.
-category: architecture
-version: 4.1.0-fractal
-layer: master-skill
+description: >-
+  Thiết kế API RESTful / RPC chuẩn cho dự án — quy ước URI, HTTP status codes,
+  Boundary Validation, phân trang PagedData, chuẩn hóa lỗi và tạo tài liệu
+  cURL / Postman test.
 ---
 
-# API Patterns
+# /api-patterns — REST & API Contract Standards
 
-> API design principles and decision-making for 2025.
-> **Learn to THINK, not copy fixed patterns.**
+Tiêu chuẩn thiết kế API thống nhất trên toàn dự án.
 
-## 🎯 Selective Reading Rule
+## 1. Quy ước đặt URI & HTTP Methods
 
-**Read ONLY files relevant to the request!** Check the content map, find what you need.
+| Hành động | Method | URI Pattern | Response HTTP |
+|---|---|---|---|
+| Lấy danh sách phân trang | `GET` / `POST` | `/api/v1/{resources}` (hoặc `/search`) | 200 OK |
+| Lấy chi tiết | `GET` | `/api/v1/{resources}/{id}` | 200 OK |
+| Tạo mới | `POST` | `/api/v1/{resources}` | 201 Created |
+| Cập nhật toàn phần | `PUT` | `/api/v1/{resources}/{id}` | 200 OK |
+| Cập nhật một phần | `PATCH` | `/api/v1/{resources}/{id}` | 200 OK |
+| Xóa (Soft delete) | `DELETE` | `/api/v1/{resources}/{id}` | 200 OK / 204 No Content |
 
----
+- URI dùng danh từ số nhiều, lowercase, `kebab-case`.
+- Khi đổi tên URI trên endpoint đã phát hành, giữ route alias tương thích ngược cho Frontend cũ.
 
-## 📑 Content Map
+## 2. Request & Boundary Validation
 
-| File | Description | When to Read |
-|------|-------------|--------------|
-| `api-style.md` | REST vs GraphQL vs tRPC decision tree | Choosing API type |
-| `rest.md` | Resource naming, HTTP methods, status codes | Designing REST API |
-| `response.md` | Envelope pattern, error format, pagination | Response structure |
-| `graphql.md` | Schema design, when to use, security | Considering GraphQL |
-| `trpc.md` | TypeScript monorepo, type safety | TS fullstack projects |
-| `versioning.md` | URI/Header/Query versioning | API evolution planning |
-| `auth.md` | JWT, OAuth, Passkey, API Keys | Auth pattern selection |
-| `rate-limiting.md` | Token bucket, sliding window | API protection |
-| `documentation.md` | OpenAPI/Swagger best practices | Documentation |
-| `security-testing.md` | OWASP API Top 10, auth/authz testing | Security audits |
+- Luôn thực hiện kiểm tra hợp lệ dữ liệu ngay tại biên API (Typed Extractor / Validator / Schema).
+- Tuyệt đối không nhận trực tiếp Entity CSDL từ Client; bắt buộc đi qua Request DTO / Struct.
 
----
+## 3. Response Structure & Error Mapping
 
-## 🔗 Related Skills
+- Trả về cấu trúc dữ liệu/phân trang chuẩn của dự án (`BaseResponse<T>`, `PagedData<T>`).
+- Ánh xạ lỗi miền (Domain Error / Core Exception) nhất quán tại Global Error Handler / Middleware:
+  - `400 Bad Request`: Dữ liệu đầu vào hoặc quy tắc nghiệp vụ không hợp lệ.
+  - `401 Unauthorized` / `403 Forbidden`: Chưa xác thực hoặc không đủ quyền truy cập tài nguyên.
+  - `404 Not Found`: Không tìm thấy bản ghi theo định danh.
+  - `409 Conflict`: Trùng lặp mã định danh hoặc xung đột trạng thái (`optimistic lock` / `operation_status`).
 
-| Need | Skill |
-|------|-------|
-| API implementation | `@[skills/backend-development]` |
-| Data structure | `@[skills/database-design]` |
-| Security details | `@[skills/security-hardening]` |
-
----
-
-## ✅ Decision Checklist
-
-Before designing an API:
-
-- [ ] **Asked user about API consumers?**
-- [ ] **Chosen API style for THIS context?** (REST/GraphQL/tRPC)
-- [ ] **Defined consistent response format?**
-- [ ] **Planned versioning strategy?**
-- [ ] **Considered authentication needs?**
-- [ ] **Planned rate limiting?**
-- [ ] **Documentation approach defined?**
-
----
-
-## ❌ Anti-Patterns
-
-**DON'T:**
-- Default to REST for everything
-- Use verbs in REST endpoints (/getUsers)
-- Return inconsistent response formats
-- Expose internal errors to clients
-- Skip rate limiting
-
-**DO:**
-- Choose API style based on context
-- Ask about client requirements
-- Document thoroughly
-- Use appropriate status codes
-
----
-
-## Script
-
-| Script | Purpose | Command |
-|--------|---------|---------|
-| `scripts/api_validator.py` | API endpoint validation | `python scripts/api_validator.py <project_path>` |
-
+## 4. Chuẩn Tài liệu API Test (cURL / Postman Artifact)
+- Khi người dùng yêu cầu bộ API test (`cho api test`), luôn khởi tạo thành một **Artifact Markdown** hoàn chỉnh với JSON body chuẩn cho các kịch bản nghiệp vụ, kèm hướng dẫn truyền header xác thực (`Authorization: Bearer <TOKEN>` hoặc Gateway headers).

@@ -1,0 +1,17 @@
+{
+  "workspace-prevent-full-file-overwrite": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "write_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/prevent-overwrite.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

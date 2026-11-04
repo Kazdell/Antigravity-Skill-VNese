@@ -1,46 +1,30 @@
 ---
 trigger: glob
-glob: "**/*.{js,jsx,ts,tsx,css,scss,html,vue,svelte,dart,swift,kt,xml}"
+glob: "**/*.{ts,tsx,js,jsx,html,vue,svelte,scss,css}"
 ---
 
-# FRONTEND.MD - Client-Side Mastery
+# FRONTEND.MD — Frontend Clean Code & Zero-Waste Rules
 
-> **Mục tiêu**: Quản lý thống nhất Giao diện Web & Mobile. Một nguồn chân lý cho trải nghiệm người dùng.
+## 1. ZERO-WASTE NAVIGATION & VERIFICATION
+1. **Scoped Component Discovery**:
+   - **CẤM** đọc các file cấu hình định tuyến tổng (`*.routes.*`, `router.*`) hoặc quét đệ quy vào `node_modules`, `dist`, `build`, `.next`, `.angular`.
+   - Khi sửa màn hình/component cụ thể, dùng `Select-String` tìm theo mã màn hình, selector, hoặc i18n key trong thư mục nguồn (`src/`) rồi gọi `read_file` trực tiếp vào các file của component đó.
+2. **No Unsolicited Build / Typecheck**:
+   - **CẤM** tự ý chạy lệnh build/typecheck (`npx.cmd tsc`, `npm run build`, `ng build`, `next build`) sau khi sửa file Frontend khi dev server / live watcher đang chạy, trừ khi người dùng yêu cầu tường minh.
 
----
+## 2. ZERO DEFENSIVE REDUNDANCY & SHARED UTILITIES (DRY)
+1. **Trust Shared Form Controls & API Contracts**:
+   - Tin tưởng cơ chế đồng bộ giá trị/trạng thái của các shared form controls và cấu trúc dữ liệu từ API response chuẩn.
+   - **Single Validation Point**: Thực hiện validate dữ liệu tập trung **1 lần duy nhất** tại hàm `validate()` / `onSubmit()` dùng chung trước khi gửi request; cấm rải check điều kiện trùng lặp ở nhiều sự kiện UI trung gian.
+2. **Reuse Shared User / Permission & Format Helpers**:
+   - Bắt buộc tái sử dụng các hàm utility kiểm tra người dùng hiện tại, quyền thao tác (`canEdit`, `canApprove`, actor check), định dạng ngày tháng/tiền tệ và xử lý tải file sẵn có trong bộ `shared/utils` hoặc `core` của dự án.
+   - **CẤM** nhân bản logic parse token/user info hoặc viết lại hàm kiểm tra quyền cục bộ trong từng component.
+3. **Clean Reactive State & Resource Cleanup**:
+   - Làm phẳng logic xử lý dữ liệu và tránh lồng ghép `if-else` / ternary nhiều tầng trong cả code logic lẫn template.
+   - Quản lý vòng đời bất đồng bộ an toàn (hủy subscription/listener/timer khi component unmount; tránh lồng callback/subscribe nhiều cấp).
 
-##  1. PREMIUM UX/UI
-
-1. **Design Spec Anchoring (DESIGN.md)**:
-   - AI **BẮT BUỘC** phải đọc và phân tích file `DESIGN.md` tại thư mục gốc của dự án trước khi viết hoặc chỉnh sửa bất kỳ mã giao diện nào (HTML/CSS/JS/Tailwind/React/Vue...).
-   - CẤM TUYỆT ĐỐI việc tự ý sử dụng mã màu hex, phông chữ hoặc kích thước bo góc nằm ngoài danh sách Design Tokens đã được quy định trong đặc tả.
-2. **Aesthetics**: Tuân thủ hệ màu phối hợp (như limestone, slate, Boston clay) và typography chuẩn (Public Sans, Space Grotesk) được quy định trong spec. Whitespace là sang trọng.
-3. **Spacing & Shapes**: Hệ thống spacing tuân thủ bội số của 8px (`spacing.sm`, `spacing.md`, `spacing.lg`). Độ bo góc sử dụng đúng tỷ lệ (`rounded.sm`, `rounded.md`, `rounded.lg`).
-4. **Feedback**: Mọi tương tác (Click, Tap) đều phải có phản hồi thị giác ngay lập tức.
-
----
-
-##  2. MOBILE & RESPONSIVE
-
-1. **Touch Targets**: Button tối thiểu 44x44px (Chuẩn ngón tay cái).
-2. **Safe Areas**: Tôn trọng tai thỏ (Notch) và Home Indicator trên iOS/Android.
-3. **Mobile-First**: Code CSS cho mobile trước, override cho PC sau.
-
----
-
-##  3. PERFORMANCE DOMAIN
-
-1. **Core Web Vitals**: LCP < 2.5s, CLS < 0.1, FID < 100ms.
-2. **Optimistic UI**: Cập nhật giao diện TRƯỚC khi API trả về (Zalo/Facebook style).
-3. **Asset Optimization**: Ảnh WebP, Video lazy-load.
-
----
-
-## ️ 4. STATE & COMPONENT
-
-1. **Atomic Design**: Component nhỏ, tái sử dụng cao (`<Button />`, `<INPUT />`).
-2. **State**: Server State (TanStack Query) !== Client State (Zustand/Context). Tách biệt rõ ràng.
-
----
-
-
+## 3. SURGICAL TEMPLATE & COMPONENT EDITS
+1. **Minimal Diff (`CRLF` Safe)**:
+   - Dùng `edit_file` chỉ sửa đúng block UI/logic mục tiêu; không tự ý format lại toàn bộ file template, không đổi tên props/input/output đang hoạt động ổn định và không xóa comment nghiệp vụ sẵn có.
+2. **i18n & Constants Consistency**:
+   - Không hardcode chuỗi thông báo/nhãn giao diện nếu dự án đang dùng i18n; tái sử dụng các hằng số trạng thái/enum dùng chung giữa các màn hình cùng nghiệp vụ.
