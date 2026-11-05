@@ -61,11 +61,9 @@
 
 | Skill Folder | Description | When to Use |
 |---|---|---|
-| `typescript-expert` | TypeScript deep expertise: types, generics, monorepo | Complex TypeScript, type system |
-| `typescript-pro` | TypeScript advanced patterns & strict typing | TypeScript architecture |
-| `typescript-advanced-types` | Conditional types, mapped types, template literals | Advanced TS type engineering |
-| `javascript-mastery` | 33 core JS concepts: closures, event loop, async | JS fundamentals, explain concepts |
-| `javascript-pro` | Modern JS: ES6+, async patterns, Node compat | JS optimization, async debugging |
+| `typescript-expert` | TypeScript deep expertise: types, generics, monorepo, build, migration | **Mọi** TypeScript/JS issue — routing sang sub-expert nếu cần |
+| `typescript-advanced-types` | Conditional types, mapped types, template literals | Type-level programming thuần túy |
+| `javascript-mastery` | 33 core JS concepts: closures, prototype, event loop, async | JS fundamentals, explain/debug JS concepts |
 
 ---
 
@@ -86,8 +84,7 @@
 |---|---|
 | `agents.md` | Always on — core constitution |
 | `agent-routing.md` | Always on — routing protocol |
-| `GEMINI.md` | Always on — redirect to agents.md |
-| `claude.md` | Always on — redirect to agents.md |
+| `GEMINI.md` | Always on — entrypoint, list all rules |
 | `re-constitution.md` | Reverse engineering tasks |
 | `static-and-binary-analysis.md` | Static binary analysis, Ghidra, strings |
 | `reconstruction-and-debug.md` | Reconstruct logic, debug decompiled code |
