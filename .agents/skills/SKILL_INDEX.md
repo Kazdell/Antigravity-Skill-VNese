@@ -5,27 +5,10 @@
 
 ---
 
-## TIER 1 — Reverse Engineering & Security (Primary Domain)
+## TIER 1 — Orchestration & Workflow
 
 | Skill Folder | Description | When to Use |
 |---|---|---|
-| `reverse-engineer-anything` | Universal RE skill: Android APK, iOS, .NET, Electron, WASM, binary, firmware | ANY reverse engineering task, decompile, analyze binary |
-| `dynamic-runtime-tracing` | Dynamic analysis: Frida, GDB, pwndbg, runtime hook, tracing, memory capture | Runtime tracing, hook functions, capture API calls |
-| `static-binary-triage` | Static binary analysis: strings, checksec, entropy, file format triage | First-pass binary analysis, triage unknown binary |
-| `feature-reconstruction` | Reconstruct undocumented features from decompiled code | Reconstruct logic, map decompiled code to features |
-| `customize-stack` | Customize the RE toolchain and agent environment | Setup RE environment, install tools, configure stack |
-| `Reverse_Engineering_Offsets` | Static/dynamic offset hunting: Ghidra, x64dbg, ReClass.NET, AOB scanning | Find memory offsets, pattern scan, SDK dump |
-| `Memory_Access_Stealth_Bypass` | Out-of-process RPM/WPM, Direct Syscalls, Kernel Driver (Ring 0), DMA, Anti-Cheat bypass | Stealth memory read/write, bypass anti-cheat |
-| `Game_Engine_Math_Overlay` | Unity/Unreal W2S math, View Matrix, GLFW transparent overlay | Game overlay, World-to-Screen, ESP drawing |
-| `Java_Swing_Javassist_Modding` | Java bytecode patching via Javassist, JAR modding, Swing overlay menu | Java game modding, bytecode patch, JAR repack |
-
----
-
-## TIER 2 — General Software Development (Enrichment)
-
-| Skill Folder | Description | When to Use |
-|---|---|---|
-| `master` | Master orchestration skill: routes to correct specialist | Unsure which skill → start here |
 | `plan` | Planning & architecture design, feature breakdown | New feature, project planning, architecture |
 | `create` | Code generation & scaffolding | Write new code, implement feature |
 | `debug` | Debugging, root cause analysis, fix errors | Bug fix, error investigation |
@@ -35,12 +18,12 @@
 | `orchestrate` | Multi-agent task orchestration | Complex multi-step tasks, delegation |
 | `status` | Report task status and progress | Status update, progress report |
 | `handover` | Context handover between sessions/agents | End of session, agent switch |
-| `reframe` | Reframe problem when stuck or blocked | Stuck, need new perspective |
 | `workflow-simplified` | Simplified workflow reference | Quick workflow lookup |
+| `customize-stack` | Customize toolchain & agent environment for specific stack | Setup environment, configure stack per language/framework |
 
 ---
 
-## TIER 3 — Backend & API Patterns
+## TIER 2 — Backend & API Patterns
 
 | Skill Folder | Description | When to Use |
 |---|---|---|
@@ -57,19 +40,17 @@
 
 ---
 
-## TIER 4 — Frontend & TypeScript
+## TIER 3 — Frontend & TypeScript
 
 | Skill Folder | Description | When to Use |
 |---|---|---|
 | `typescript-expert` | TypeScript deep expertise: types, generics, monorepo | Complex TypeScript, type system |
-| `typescript-pro` | TypeScript advanced patterns & strict typing | TypeScript architecture |
 | `typescript-advanced-types` | Conditional types, mapped types, template literals | Advanced TS type engineering |
 | `javascript-mastery` | 33 core JS concepts: closures, event loop, async | JS fundamentals, explain concepts |
-| `javascript-pro` | Modern JS: ES6+, async patterns, Node compat | JS optimization, async debugging |
 
 ---
 
-## TIER 5 — Systems & Infrastructure
+## TIER 4 — Systems & Infrastructure
 
 | Skill Folder | Description | When to Use |
 |---|---|---|
@@ -87,12 +68,6 @@
 | `agents.md` | Always on — core constitution |
 | `agent-routing.md` | Always on — routing protocol |
 | `GEMINI.md` | Always on — redirect to agents.md |
-| `claude.md` | Always on — redirect to agents.md |
-| `re-constitution.md` | Reverse engineering tasks |
-| `static-and-binary-analysis.md` | Static binary analysis, Ghidra, strings |
-| `reconstruction-and-debug.md` | Reconstruct logic, debug decompiled code |
-| `runtime-and-capture-safety.md` | Dynamic tracing, Frida, runtime hooks |
-| `game-modding-external-policy.md` | Game modding, anti-cheat, memory offsets |
 | `ai-agentic.md` | LLM, RAG, agents, MCP, tool integrations |
 | `debug.md` | Bug fix, error analysis, test failures |
 | `planning-architect.md` | Architecture design, project planning |
