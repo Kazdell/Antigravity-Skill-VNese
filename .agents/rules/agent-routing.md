@@ -1,60 +1,37 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: "When routing code generation, architecture, security, or multi-domain tasks to domain skills, shared DNA, or Native Swarm workers."
 ---
 
-# AGENT ROUTING PROTOCOL
+# AGENT & SKILL ROUTING PROTOCOL
 
-> **Goal**: Enforce the mandatory Tri-Part Linkage routing workflow (Agents -> Shared DNA -> Skills) whenever processing user requests.
+> **Goal**: Enforce streamlined Tri-Part Linkage (Domain Role -> Shared DNA -> Skills) and 3-Tier Teamwork routing without dead-path lookups.
 
-## 1. Mandatory Routing Workflow
+## 1. Streamlined Routing Workflow
 
-Upon receiving any request (specifically code generation, architectural changes, or bug fixes), Jarvis **MUST** execute the following 5 routing steps BEFORE writing code:
+For non-trivial coding, architecture, or reverse engineering tasks, execute BEFORE mutating code:
 
 1. **INTENT TRANSPARENCY & RISK ASSESSMENT:**
-   - Explicitly declare analysis intent and locate the task within the **Goal -> Analyze -> Act -> Observe** loop.
-   - Evaluate Risk Level (High/Medium/Low) and Reversibility. If the task is High-Risk / Irreversible (main source code edits, binary patching, file deletions), **HALT AND PROMPT FOR HUMAN APPROVAL GATE** before touching files.
+   - Locate the task within **Goal -> Analyze -> Act -> Observe**.
+   - If High-Risk / Irreversible (DB schema migration, public API break, binary patching, file deletion), **HALT AND PROMPT FOR HUMAN APPROVAL GATE** before touching files.
 
-2. **AGENT IDENTIFICATION:**
-   - Analyze the domain of the task (Frontend, Backend, DevOps, DB, Game Dev...).
-   - Load and invoke the responsible MK Specialist located under `.agents/agents/mkXX-*.md`.
-   - Retrieve `MK_ID` (e.g., `mk01`, `mk02`, `mk17`).
+2. **TEAMWORK TIER & ROLE SELECTION:**
+   - `<= 5` files (single domain): Execute directly (Tier 0).
+   - `2–3` independent read-only lookups: Use `invoke_subagent` scouts (Tier 1).
+   - `> 5` files, multi-domain, or Author <-> Verifier workflow: Load built-in `swarm` (`native_swarm`) or `/orchestrate` skill and assign job-named workers (`backend`, `frontend`, `re-native`, `verifier`, `monitor`).
 
-3. **DNA STANDARDS CHECK:**
-   - Agent **MUST** query `.agents/.shared/SHARED_INDEX.md` to locate relevant standards files instead of loading the entire `.shared` directory to **save tokens**.
-   - Load only the DNA files strictly relevant to the task (e.g., read `api-standards` for BE; skip `design-system`).
+3. **DNA & SKILL LOADING (ON-DEMAND ONLY):**
+   - Query `.agents/.shared/SHARED_INDEX.md` (if present) and `.agents/skills/SKILL_INDEX.md` to locate only the exact standard/skill needed.
+   - Read `.agents/skills/<skill-name>/SKILL.md` directly. **Never scan the entire `skills/` directory.**
 
-4. **SKILL LOADING:**
-   - Agent **MUST** query `.agents/skills/SKILL_INDEX.md` to locate the target Skill name.
-   - Access `.agents/skills/{MK_ID}/{skill-name}/SKILL.md` to load instructions. **Do not scan the entire directory** to prevent context bloat.
-
-5. **MEM0 MEMORY & AUDITABILITY:**
-   - **Task Start**: Call `search_facts` or `get_all_facts` from Mem0 to retrieve project context. Never guess project architecture.
-   - **Task Completion**: Output an Audit Trail report (distinguishing AI-generated vs User-provided vs preserved codebase code) and call Mem0 `add_fact` to persist lessons learned.
+4. **AUDITABILITY:**
+   - Upon completing code/RE mutations, output a concise Audit Trail summary with verified evidence/compile status.
 
 ---
 
 ## 2. Execution Standards
 
-- **No Guessing**: Never infer implementation logic if not specified in `.shared/` or `skills/`. Ask the User or query Mem0/codebase.
-- **Selection Reporting**: Report to the User which MK Specialist, Shared DNA, and Skill from `SKILL_INDEX.md` are being invoked.
-
----
-
-## 3. ADVANCED PROMPT CHAINING: CoT & ToT PROTOCOL
-
-To maximize reasoning accuracy and prevent hasty architectural decisions, Agent MUST apply Chain of Thought (CoT) and Tree of Thoughts (ToT) prompting patterns:
-
-### A. Chain of Thought (CoT) Protocol — Step-by-Step Reasoning
-- **When to trigger**: Applied MANDATORY during the `Analyze` stage of G-A-A-O for all non-trivial bug fixes, code refactoring, and crash analysis (`/mod-debug`).
-- **Execution**:
-  1. *Observed Phenomenon*: State exact error log/symptom.
-  2. *Hypothesis Matrix*: List at least 2 potential root causes.
-  3. *Evidence-Based Elimination*: Verify against source code/logs to eliminate invalid hypotheses.
-  4. *Final Selection*: State exact justification before mutating code.
-
-### B. Tree of Thoughts (ToT) Protocol — Multi-Path Evaluation
-- **When to trigger**: Applied MANDATORY during `/mod-plan` or architectural decision-making when facing complex targets, anti-cheat detection, or open-ended features.
-- **Execution**:
-  1. *Branching (Tree)*: Generate 2 to 3 distinct implementation paths (e.g., Branch A: Source Patch, Branch B: Internal Hook, Branch C: External RPM/Overlay).
-  2. *Path Evaluation*: Score each branch against 3 metrics: Stealth/AC Risk, Technical Complexity, Maintenance Overhead.
-  3. *Selection & Pruning*: Prune high-risk/suboptimal branches and proceed ONLY with the highest-scoring path.
+- **No Guessing**: Never infer hidden business rules or protocol offsets; verify in codebase/binaries or ask the User.
+- **CoT & ToT Reasoning**:
+  - **CoT (Bug Fixes / `/debug`)**: Symptom -> 2+ Hypotheses -> Evidence Elimination -> Root-Cause Fix.
+  - **ToT (Architecture / `/plan`)**: Evaluate 2–3 candidate approaches against Complexity, Risk, and Maintenance; prune suboptimal paths before coding.

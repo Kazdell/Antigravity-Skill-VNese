@@ -15,8 +15,12 @@
 | `test` | Test writing: unit, integration, E2E | Write tests, TDD, test coverage |
 | `audit` | Code review & security audit | PR review, security scan, code quality |
 | `code-quality` | Code quality standards and refactoring | Refactor, clean code, reduce tech debt |
-| `orchestrate` | Multi-agent task orchestration | Complex multi-step tasks, delegation |
-| `status` | Report task status and progress | Status update, progress report |
+| `orchestrate` | Unified 3-Tier & Native Swarm orchestration | Complex multi-domain tasks (`>5` files), parallel RE, Author/Verifier |
+| `deploy` | Production & preview deployment with pre-flight & health checks | Deploy app, rollback, pre-deploy audit |
+| `reframe` | Technical blind-spot scan & Sandwich prompt restructuring | Ambiguous specs, complex prompt framing |
+| `log-error` | Systematic error logging to `ERRORS.md` & prevention rules | Recurring bugs, post-mortem logging |
+| `monitor` | Production observability: structured logs, Sentry, `/health` | Setup monitoring, logging, health checks |
+| `status` | Report task status, Swarm state, and progress | Status update, progress report |
 | `handover` | Context handover between sessions/agents | End of session, agent switch |
 | `workflow-simplified` | Simplified workflow reference | Quick workflow lookup |
 | `customize-stack` | Customize toolchain & agent environment for specific stack | Setup environment, configure stack per language/framework |
@@ -65,8 +69,8 @@
 
 | Rule File | Trigger Condition |
 |---|---|
-| `agents.md` | Always on — core constitution |
-| `agent-routing.md` | Always on — routing protocol |
+| `agents.md` | Always on — core constitution & 3-Tier Swarm policy |
+| `agent-routing.md` | Model decision — streamlined skill & Swarm routing |
 | `GEMINI.md` | Always on — redirect to agents.md |
 | `ai-agentic.md` | LLM, RAG, agents, MCP, tool integrations |
 | `debug.md` | Bug fix, error analysis, test failures |

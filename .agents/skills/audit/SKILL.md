@@ -14,6 +14,7 @@ Quy trình thẩm định toàn diện kết quả dịch ngược và mã ngu�
 
 ### Bước 1: Kiểm tra Phạm vi Thay đổi & Trạng thái Phiên REA
 - Kiểm tra danh sách file vừa thêm/sửa (`git status --short` / `git diff --name-only`) và đọc trực tiếp bằng `read_file`.
+- Với dự án lớn (`> 5` files nhiều mảng), có thể phối hợp qua Native Swarm (`swarm`) với các `verifier` độc lập soi song song Security, Logic/Contract và Clean Code.
 - Kiểm tra đảm bảo mọi phiên phân tích nhị phân (`close_binary`) hoặc phiên hook động (`close_frida_session`, GDB/Rizin) đã được đóng sạch sẽ sau khi trích xuất đủ bằng chứng.
 
 ### Bước 2: Rà soát Evidence Provenance & Clean Code Checklist
